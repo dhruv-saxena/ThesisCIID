@@ -9,7 +9,7 @@ class Person {
   float maxforce;
   float maxspeed;
   
-  float steerForceFactor = 1;
+  float steerForceFactor = 1; //Weights of steer and separate counter each other. 1 and 1.01 is the best combo.
   float separateForceFactor = 1.01;
 
   //Maybe use mass and colour 
@@ -35,8 +35,8 @@ class Person {
     targetMap = new PVector(hx, hy);//Start the sketch with home countries if time is less than the first time of the person.
     home = new PVector(hx,hy);
 
-    maxspeed = 4;
-    maxforce = 0.1;
+    maxspeed = 6;
+    maxforce = 0.6;
     r=10;
 
     name = n;
@@ -48,7 +48,7 @@ class Person {
 
 
   void display() {
-      fill(0,random(100,180),0);
+      fill(100);
     ellipse(location.x, location.y, r, r);
   }
 

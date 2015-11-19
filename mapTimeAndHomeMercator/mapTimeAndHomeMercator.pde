@@ -14,7 +14,7 @@ boolean home =false;
 void setup() {
 
   //size(856, 500,P2D);
-  fullScreen(FX2D);
+  fullScreen(P2D);
   smooth();
   noStroke();
   
