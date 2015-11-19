@@ -16,6 +16,8 @@ class Person {
   //Maybe use mass and colour 
   float mass;
   String colour;
+  boolean alive = true;
+  float textSize; 
 
   //DB stuff
   String name;
@@ -38,7 +40,8 @@ class Person {
     home = new PVector(hx, hy);
     target = new PVector(0, 0);//Does not matter what values you give. Just initialising.
 
-    mass = random(5, 15);
+    mass = random(8, 15);
+    textSize = mass*2/3;
 
     maxspeed = 8;
     maxforce = 1;
@@ -64,10 +67,10 @@ class Person {
     }
 
     // Added first name initial
-    fill(0);
+    fill(255);
     textAlign(CENTER, CENTER);
-    textSize(12); 
-    text(name, location.x, location.y);
+    textSize(textSize); 
+    text(name.toUpperCase().charAt(0), location.x, location.y);
   }
 
 
@@ -116,7 +119,13 @@ class Person {
     int count = 0;
     // For every boid in the system, check if it's too close
     for (Person other : persons) {
-      float desiredseparation = (r+other.r)/2;  
+      float desiredseparation;
+      
+      if(other.alive)
+      desiredseparation = (r+other.r)/2;  
+      else
+      desiredseparation = 0;  
+      
       float d = PVector.dist(location, other.location);
       // If the distance is greater than 0 and less than an arbitrary amount (0 when you are yourself)
       if ((d > 0) && (d < desiredseparation)) {

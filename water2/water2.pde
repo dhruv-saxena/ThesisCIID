@@ -5,6 +5,7 @@ Feature List
 3. Water
 4. Database
 5. Trail
+6. life - comment out p.alive = false in getPlace() to not kill.
 */
 
 PImage land;
@@ -35,9 +36,9 @@ int i,a,b;
 
 void setup() {
 
-  //size(1920, 1080,FX2D);
-  size(720, 450,P2D);// Use fullScreen mode, FX2D can create strange offsets when size is defined.
-  //fullScreen(FX2D);
+  size(1440, 900,FX2D);
+  //size(720, 450,P2D);// Use fullScreen mode, FX2D can create strange offsets when size is defined.
+  //fullScreen(P2D);
   
   frameRate(60);
   noStroke();  
@@ -62,6 +63,7 @@ void draw() {
   
   waterDraw();
   movePersons();
+  println(width,height);
   
 }
 

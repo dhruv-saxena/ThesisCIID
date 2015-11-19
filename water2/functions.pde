@@ -48,10 +48,13 @@ void getPlace() {
       }
     }
     if (index>-1) {    
+      p.alive = true; // can remove if not killing
       p.targetMap = p.cordinates.get(index); 
       println(p.places.get(index) + " X: " + p.targetMap.x + " Y: " + p.targetMap.y); //here you can do what you need with the place
-    } else
+    } else{
       p.targetMap = p.home;
+      //p.alive = false; // this is the statement alone responsible for killing. Remove this to not kill.
+    }
   }
 }
 
@@ -62,6 +65,8 @@ void getPlace() {
 void movePersons() {
 
   for (Person p : persons) {
+    if(p.alive){ //can remove if not killing
+    
     PVector pos;
 
     if (home)
@@ -77,6 +82,7 @@ void movePersons() {
     p.update();
     p.display();
     disturb(int(p.location.x), int(p.location.y));
+    }
   }
 }
 

@@ -1,5 +1,5 @@
 class Person {
-
+  ArrayList<PVector> points;
   PVector location;
   PVector velocity;
   PVector acceleration;
@@ -17,6 +17,8 @@ class Person {
     velocity = new PVector(0, 0);
     location = new PVector(x, y);
 
+    points = new ArrayList<PVector>();
+
     maxspeed = 4;
     maxforce = 0.1;
   }
@@ -25,9 +27,13 @@ class Person {
   }
 
   void display() {
-    ellipse(location.x,location.y,10,10);
+    pointTrail(points);
+    for (int i=0; i< points.size(); i++) {
+      ellipse(points.get(i).x, points.get(i).y, i, i);
+      //println(i + " " + points.get(i).x);
+    }
   }
-  
+
 
   void update() {
     velocity.add(acceleration);
@@ -54,5 +60,19 @@ class Person {
     PVector steerforce = PVector.sub(desired, velocity);
     steerforce.limit(maxforce);
     applyForce(steerforce);
+  }
+
+  void pointTrail(ArrayList<PVector> points) {
+    if (points.size()>9) {
+      points.remove(0);
+    }
+    points.add(new PVector(location.x,location.y));
+  }
+
+
+  void printPoints() {
+    for (int i =0; i<points.size(); i++){
+      println(i + " " + points.get(i).x);
+    }
   }
 }
