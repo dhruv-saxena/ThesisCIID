@@ -1,6 +1,10 @@
 //Load data from DB into persons arraylist. This function should remain same in next versions.
 //The function solely pertains to DB, and nothing else.
 //The function is called in the setup, and would be called in the setup of all sketches further on.
+boolean optimize = false;
+int optimizeFactor = 5; //divides frames by this factor. At FX2D renderer this trick works very well.
+
+
 void loadData() {
   table = loadTable("data.csv", "header");
 
@@ -35,7 +39,7 @@ void getPlace() {
   //iterate over each person
   for (int i=0; i<persons.size (); i++) {
     Person p = persons.get(i);
-    println(p.name);
+    //println(p.name);
 
     //get the right place index according to time
     int index = -1;
@@ -50,8 +54,8 @@ void getPlace() {
     if (index>-1) {    
       p.alive = true; // can remove if not killing
       p.targetMap = p.cordinates.get(index); 
-      println(p.places.get(index) + " X: " + p.targetMap.x + " Y: " + p.targetMap.y); //here you can do what you need with the place
-    } else{
+      //println(p.places.get(index) + " X: " + p.targetMap.x + " Y: " + p.targetMap.y); //here you can do what you need with the place
+    } else {
       p.targetMap = p.home;
       //p.alive = false; // this is the statement alone responsible for killing. Remove this to not kill.
     }
@@ -63,29 +67,32 @@ void getPlace() {
 // You will have to put in your algorithm to get the pixel positions for the lat and long values in targetMap.
 //Remember that targetMap is there in every person, and it holds only the relevant lat and long according to scrub.
 void movePersons() {
-
+  float dist;
   for (Person p : persons) {
-    if(p.alive){ //can remove if not killing
-    
-    PVector pos;
+    if (p.alive) { //can remove if not killing
 
-    if (home)
-      pos = mercatorMap.getScreenLocation(p.home);
+      PVector pos;
 
-    else
-      //get the screen position for the relevant lat and long
-      pos = mercatorMap.getScreenLocation(p.targetMap);
+      if (home)
+        pos = mercatorMap.getScreenLocation(p.home);
 
-    p.target = pos;
-    p.arrive(p.target);
-    p.separate(persons);
-    p.update();
-    p.display();
-    disturb(int(p.location.x), int(p.location.y));
+      else
+        //get the screen position for the relevant lat and long
+        pos = mercatorMap.getScreenLocation(p.targetMap);
+      
+      
+      p.target = pos;
+      p.arrive(p.target);
+      p.separate(persons);
+      p.update();
+      p.display();
+      dist = PVector.dist(p.location,p.target);
+      if(dist>3) //do not disturb if the person is within 3 units of target.
+      disturb(int(p.location.x), int(p.location.y));
+      //println(p.name+ "  " + p.location + "  "  + pos);
     }
   }
 }
-
 //Water Simulation Functions
 
 void waterSetup() {
@@ -105,7 +112,13 @@ void waterSetup() {
 // Whatever needs to go in draw
 void waterDraw() {
   image(water, 0, 0, width, height);
-  loadPixels();
+
+  if (optimize) {
+    if (int(frameCount%optimizeFactor)==1)//render every alternate frame. Do not say %=0 or will get out of bounds error.
+      loadPixels();
+  } else
+    loadPixels();
+
   texture = pixels;
 
   newframe();
@@ -113,10 +126,10 @@ void waterDraw() {
   for (int i = 0; i < pixels.length; i++) {
     pixels[i] = ripple[i];
   }
-
   updatePixels();
   ellipse(0, 0, 0, 0); //a bug, the next image does not render without this line.
   image(land, 0, 0, width, height);
+  smooth();
 }
 
 

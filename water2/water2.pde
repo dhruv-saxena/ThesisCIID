@@ -6,6 +6,8 @@ Feature List
 4. Database
 5. Trail
 6. life - comment out p.alive = false in getPlace() to not kill.
+7. optimised - variable in functions tab
+8. do not distrub if person is within 3 units of target
 */
 
 PImage land;
@@ -36,9 +38,9 @@ int i,a,b;
 
 void setup() {
 
-  size(1440, 900,FX2D);
+  //size(1440, 900,FX2D);
   //size(720, 450,P2D);// Use fullScreen mode, FX2D can create strange offsets when size is defined.
-  //fullScreen(P2D);
+  fullScreen(FX2D);
   
   frameRate(60);
   noStroke();  
@@ -59,11 +61,12 @@ void setup() {
 }
 
 void draw() {
-  background(0,0,255);
-  
+  background(255);
+  image(water, 0, 0, width, height);
+  image(land, 0, 0, width, height);
   waterDraw();
   movePersons();
-  println(width,height);
+ 
   
 }
 

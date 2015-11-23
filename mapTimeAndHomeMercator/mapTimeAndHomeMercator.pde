@@ -13,13 +13,13 @@ boolean home =false;
 
 void setup() {
 
-  //size(856, 500,P2D);
-  fullScreen(P2D);
+  size(720, 450,P2D);
+  //fullScreen(P2D);
   smooth();
   noStroke();
   
   worldMapImage = loadImage("world.png");
-  mercatorMap = new MercatorMap(1440, 900,80,-58,-529.45+360,-167.34+360);
+  mercatorMap = new MercatorMap(width, height,80,-58,-529.45+360,-167.34+360);
   //mercatorMap = new MercatorMap(856, 500,80,-58,-529.45+360,-167.34+360);
   
   persons = new ArrayList<Person>();
